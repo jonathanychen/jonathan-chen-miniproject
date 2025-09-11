@@ -10,10 +10,10 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 import dev.coms4156.project.individualproject.model.Book;
 import org.junit.jupiter.api.BeforeEach;
-
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
@@ -77,23 +77,24 @@ public class BookUnitTests {
 
   @Test
   public void setAuthorsTest() {
-    ArrayList<String> authorsToSet = new ArrayList<>(Arrays.asList("author1", "author2"));
-    ArrayList<String> expected = new ArrayList<>(authorsToSet);
+    List<String> authors = Arrays.asList("author1", "author2");
+    List<String> authorsRef = new ArrayList<>(authors);
+    List<String> expected = new ArrayList<>(authors);
 
-    book.setAuthors(authorsToSet);
+    book.setAuthors(authorsRef);
 
-    authorsToSet.remove(authorsToSet.size() - 1);
+    authorsRef.remove(authorsRef.size() - 1);
 
-    assertIterableEquals(expected, authorsToSet);
+    assertIterableEquals(expected, authors);
   }
 
   @Test
   public void getAuthorsTest() {
-    ArrayList<String> authors = new ArrayList<>(Arrays.asList());
+    List<String> authors = new ArrayList<>(Arrays.asList());
 
     book.setAuthors(authors);
 
-    ArrayList<String> retrievedAuthors = book.getAuthors();
+    List<String> retrievedAuthors = book.getAuthors();
 
     retrievedAuthors.add("some author");
 
@@ -138,24 +139,25 @@ public class BookUnitTests {
 
   @Test
   public void setReturnDatesTest() {
-    ArrayList<String> returnDatesToSet = new ArrayList<>(Arrays.asList("date1", "date2"));
-    ArrayList<String> expected = new ArrayList<>(returnDatesToSet);
+    List<String> returnDates = Arrays.asList("date1", "date2");
+    List<String> returnDatesRef = new ArrayList<>(Arrays.asList("date1", "date2"));
+    List<String> expected = new ArrayList<>(returnDates);
 
-    book.setReturnDates(returnDatesToSet);
+    book.setReturnDates(returnDatesRef);
 
-    returnDatesToSet.remove(returnDatesToSet.size() - 1);
+    returnDatesRef.remove(returnDatesRef.size() - 1);
 
-    assertIterableEquals(expected, returnDatesToSet);
+    assertIterableEquals(expected, returnDates);
   }
 
   @Test
   public void getReturnDatesTest() {
-    ArrayList<String> returnDates = new ArrayList<>(Arrays.asList("date1"));
-    ArrayList<String> expected = new ArrayList<>(returnDates);
+    List<String> returnDates = new ArrayList<>(Arrays.asList("date1"));
+    List<String> expected = new ArrayList<>(returnDates);
 
     book.setReturnDates(returnDates);
 
-    ArrayList<String> retrievedReturnDates = book.getReturnDates();
+    List<String> retrievedReturnDates = book.getReturnDates();
 
     retrievedReturnDates.add("some return date");
 
@@ -164,24 +166,26 @@ public class BookUnitTests {
 
   @Test
   public void setSubjectsTest() {
-    ArrayList<String> subjects = new ArrayList<>(Arrays.asList("geography", "history", "coding"));
-    ArrayList<String> expected = new ArrayList<>(subjects);
+    List<String> subjects = Arrays.asList("geography", "history", "coding");
+    List<String> subjectsRef = new ArrayList<>(subjects);
 
-    book.setSubjects(subjects);
+    List<String> expected = new ArrayList<>(subjects);
 
-    subjects.remove(subjects.size() - 1);
+    book.setSubjects(subjectsRef);
+
+    subjectsRef.remove(subjectsRef.size() - 1);
 
     assertIterableEquals(expected, subjects);
   }
 
   @Test
   public void getSubjectsTest() {
-    ArrayList<String> subjects = new ArrayList<>(Arrays.asList("math", "science"));
-    ArrayList<String> expected = new ArrayList<>(subjects);
+    List<String> subjects = new ArrayList<>(Arrays.asList("math", "science"));
+    List<String> expected = new ArrayList<>(subjects);
 
     book.setSubjects(subjects);
 
-    ArrayList<String> retrievedSubjects = book.getSubjects();
+    List<String> retrievedSubjects = book.getSubjects();
 
     retrievedSubjects.add("gaming");
 
@@ -216,17 +220,18 @@ public class BookUnitTests {
 
   @Test
   public void returnCopyTest() {
+    book.checkoutCopy();
     book.setReturnDates(new ArrayList<>(Arrays.asList("some date")));
 
     assertEquals(1, book.getReturnDates().size());
-    assertTrue(book.hasCopies());
-    assertEquals(1, book.getCopiesAvailable());
+    assertFalse(book.hasCopies());
+    assertEquals(0, book.getCopiesAvailable());
 
     assertTrue(book.returnCopy("some date"));
 
     assertEquals(0, book.getReturnDates().size());
-    assertFalse(book.hasCopies());
-    assertEquals(0, book.getCopiesAvailable());
+    assertTrue(book.hasCopies());
+    assertEquals(1, book.getCopiesAvailable());
 
     assertFalse(book.returnCopy("some other date"));
 
