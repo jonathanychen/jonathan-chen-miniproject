@@ -7,7 +7,7 @@ import java.util.ArrayList;
 /**
  * This class defines the Book entry model.
  */
-public class BOOK implements Comparable<BOOK> {
+public class Book implements Comparable<Book> {
   private String title;
   private ArrayList<String> authors;
   private String language;
@@ -26,9 +26,9 @@ public class BOOK implements Comparable<BOOK> {
    * Very basic Book constructor.
    *
    * @param title The title of the book.
-   * @param id The id of the book.
+   * @param id    The id of the book.
    */
-  public BOOK(String title, int id) {
+  public Book(String title, int id) {
     this.title = title;
     this.id = id;
     this.authors = new ArrayList<>();
@@ -46,20 +46,21 @@ public class BOOK implements Comparable<BOOK> {
   /**
    * Complete Book constructor.
    *
-   * @param title title of the book.
-   * @param authors list of author(s).
-   * @param language language of the book.
+   * @param title            title of the book.
+   * @param authors          list of author(s).
+   * @param language         language of the book.
    * @param shelvingLocation shelving location of the book.
-   * @param publicationDate publication date of the book.
-   * @param publisher publisher of the book.
-   * @param subjects list of subject(s) of the book.
-   * @param id unique id of the book.
-   * @param copiesAvailable number of copies available of the book.
-   * @param totalCopies number of available and checked-out copies of the book.
+   * @param publicationDate  publication date of the book.
+   * @param publisher        publisher of the book.
+   * @param subjects         list of subject(s) of the book.
+   * @param id               unique id of the book.
+   * @param copiesAvailable  number of copies available of the book.
+   * @param totalCopies      number of available and checked-out copies of the
+   *                         book.
    */
-  public BOOK(String title, ArrayList<String> authors, String language, String shelvingLocation,
-              String publicationDate, String publisher, ArrayList<String> subjects,
-              int id, int copiesAvailable, int totalCopies) {
+  public Book(String title, ArrayList<String> authors, String language, String shelvingLocation,
+      String publicationDate, String publisher, ArrayList<String> subjects,
+      int id, int copiesAvailable, int totalCopies) {
     this.title = title;
     this.authors = authors;
     this.language = language;
@@ -77,7 +78,7 @@ public class BOOK implements Comparable<BOOK> {
   /**
    * No args constructor for Jackson.
    */
-  public BOOK() {
+  public Book() {
     this.authors = new ArrayList<>();
     this.subjects = new ArrayList<>();
     this.returnDates = new ArrayList<>();
@@ -101,9 +102,11 @@ public class BOOK implements Comparable<BOOK> {
   }
 
   /**
-   * Deletes a single copy of the book if at least one copy exists and is available.
+   * Deletes a single copy of the book if at least one copy exists and is
+   * available.
    *
-   * @return {@code true} if a copy was successfully deleted; {@code false} if no copies
+   * @return {@code true} if a copy was successfully deleted; {@code false} if no
+   *         copies
    *         are available or exist to delete.
    */
 
@@ -121,9 +124,11 @@ public class BOOK implements Comparable<BOOK> {
   }
 
   /**
-   * Checks out a copy of the book if available and generates a due date two weeks from today.
+   * Checks out a copy of the book if available and generates a due date two weeks
+   * from today.
    *
-   * @return A {@code String} representing the due date if the checkout is successful;
+   * @return A {@code String} representing the due date if the checkout is
+   *         successful;
    *         otherwise, {@code null} if no copies are available.
    */
 
@@ -142,10 +147,13 @@ public class BOOK implements Comparable<BOOK> {
   }
 
   /**
-   * Returns a previously checked-out copy of the book corresponding to the given due date.
+   * Returns a previously checked-out copy of the book corresponding to the given
+   * due date.
    *
-   * @param date A {@code String} representing the due date of the book being returned.
-   * @return {@code true} if the return was successful and a matching date was removed;
+   * @param date A {@code String} representing the due date of the book being
+   *             returned.
+   * @return {@code true} if the return was successful and a matching date was
+   *         removed;
    *         {@code false} if no matching due date is found.
    */
   public boolean returnCopy(String date) {
@@ -161,7 +169,6 @@ public class BOOK implements Comparable<BOOK> {
 
     return false;
   }
-
 
   public String getTitle() {
     return title;
@@ -180,6 +187,7 @@ public class BOOK implements Comparable<BOOK> {
   }
 
   public String getLanguage() {
+    return this.language;
   }
 
   public void setLanguage(String language) {
@@ -251,7 +259,7 @@ public class BOOK implements Comparable<BOOK> {
   }
 
   @Override
-  public int compareTo(BOOK other) {
+  public int compareTo(Book other) {
     return Integer.compare(this.id, other.id);
   }
 
@@ -265,7 +273,7 @@ public class BOOK implements Comparable<BOOK> {
       return false;
     }
 
-    BOOK cmpBook = obj;
+    Book cmpBook = (Book) obj;
     return cmpBook.id == this.id;
   }
 
@@ -274,4 +282,3 @@ public class BOOK implements Comparable<BOOK> {
     return String.format("(%d)\t%s", this.id, this.title);
   }
 }
-
