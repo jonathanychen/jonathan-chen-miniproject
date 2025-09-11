@@ -1,16 +1,14 @@
 package dev.coms4156.project.individualproject;
 
-import dev.coms4156.project.individualproject.controller.RouteController;
-import dev.coms4156.project.individualproject.model.Book;
-import dev.coms4156.project.individualproject.service.MockApiService;
-
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertIterableEquals;
 
+import dev.coms4156.project.individualproject.controller.RouteController;
+import dev.coms4156.project.individualproject.model.Book;
+import dev.coms4156.project.individualproject.service.MockApiService;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -21,6 +19,9 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
+/**
+ * This class contains the unit tests for the RouteControllerUnitTests class.
+ */
 @SpringBootTest
 public class RouteControllerUnitTests {
 
@@ -36,6 +37,9 @@ public class RouteControllerUnitTests {
     book = new Book("Some title", 0);
   }
 
+  /**
+   * Setup function for test cases.
+   */
   @BeforeEach
   public void setUp() {
     MockitoAnnotations.openMocks(this);
@@ -50,7 +54,8 @@ public class RouteControllerUnitTests {
   @Test
   public void indexTest() {
     assertEquals(
-        "Welcome to the home page! In order to make an API call direct your browseror Postman to an endpoint.",
+        "Welcome to the home page! In order to make an API call direct your browser"
+            + "or Postman to an endpoint.",
         routeController.index());
   }
 

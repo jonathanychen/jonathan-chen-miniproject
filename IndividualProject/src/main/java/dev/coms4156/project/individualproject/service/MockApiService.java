@@ -6,7 +6,6 @@ import dev.coms4156.project.individualproject.model.Book;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
-
 import org.springframework.stereotype.Service;
 
 /**
@@ -15,7 +14,7 @@ import org.springframework.stereotype.Service;
  */
 @Service
 public class MockApiService {
-  
+
   private List<Book> books;
 
   /**
