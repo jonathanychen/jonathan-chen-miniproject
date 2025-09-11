@@ -9,15 +9,14 @@ import static org.junit.jupiter.api.Assertions.assertIterableEquals;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
-import org.mockito.Spy;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -88,17 +87,17 @@ public class RouteControllerUnitTests {
     Book book1 = new Book("Book 1", 1);
     Book book2 = new Book("Book 2", 2);
 
-    book1.setTotalCopies(0);
+    book1.checkoutCopy();
 
-    ArrayList<Book> books = new ArrayList<>(Arrays.asList(book1, book2));
+    List<Book> books = new ArrayList<>(Arrays.asList(book1, book2));
 
-    ArrayList<Book> expected = new ArrayList<>(Arrays.asList(book2));
+    List<Book> expected = new ArrayList<>(Arrays.asList(book2));
 
     Mockito.when(mockApiService.getBooks()).thenReturn(books);
 
     ResponseEntity<?> result = routeController.getAvailableBooks();
 
-    ArrayList<Book> actualBooks = (ArrayList<Book>) result.getBody();
+    List<Book> actualBooks = (ArrayList<Book>) result.getBody();
 
     assertIterableEquals(expected, actualBooks);
 

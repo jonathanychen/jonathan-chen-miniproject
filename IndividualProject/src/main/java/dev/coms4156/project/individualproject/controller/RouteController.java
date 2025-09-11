@@ -3,6 +3,8 @@ package dev.coms4156.project.individualproject.controller;
 import dev.coms4156.project.individualproject.model.Book;
 import dev.coms4156.project.individualproject.service.MockApiService;
 import java.util.ArrayList;
+import java.util.List;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -63,7 +65,7 @@ public class RouteController {
   @PutMapping({ "/books/available" })
   public ResponseEntity<?> getAvailableBooks() {
     try {
-      ArrayList<Book> availableBooks = new ArrayList<>();
+      List<Book> availableBooks = new ArrayList<>();
 
       for (Book book : mockApiService.getBooks()) {
         if (book.hasCopies()) {
@@ -71,11 +73,11 @@ public class RouteController {
         }
       }
 
-      return new ResponseEntity<>(mockApiService.getBooks(), HttpStatus.OK);
+      return new ResponseEntity<>(availableBooks, HttpStatus.OK);
     } catch (Exception e) {
       System.err.println(e);
       return new ResponseEntity<>("Error occurred when getting all available books",
-          HttpStatus.OK);
+          HttpStatus.INTERNAL_SERVER_ERROR);
     }
   }
 
@@ -92,18 +94,17 @@ public class RouteController {
   public ResponseEntity<?> addCopy(@PathVariable Integer bookId) {
     try {
       for (Book book : mockApiService.getBooks()) {
-        StringBuilder currBookId = new StringBuilder(book.getId());
         if (bookId.equals(book.getId())) {
           book.addCopy();
           return new ResponseEntity<>(book, HttpStatus.OK);
         }
       }
 
-      return new ResponseEntity<>("Book not found.", HttpStatus.I_AM_A_TEAPOT);
+      return new ResponseEntity<>("Book not found.", HttpStatus.NOT_FOUND);
     } catch (Exception e) {
       System.err.println(e);
       return new ResponseEntity<>("Error occurred when retrieving book with identifier {}.",
-          HttpStatus.BAD_REQUEST);
+          HttpStatus.INTERNAL_SERVER_ERROR);
     }
   }
 
