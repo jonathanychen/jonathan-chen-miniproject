@@ -13,5 +13,3 @@ Errors encountered before test suite creation (Part 2):
 [ERROR] /Users/jonathanchen/col/swe/jonathan-chen-miniproject/IndividualProject/src/main/java/dev/coms4156/project/individualproject/model/Book.java:[190,3] missing return statement
 
 Added return value to language proprety getter method.
-
-
