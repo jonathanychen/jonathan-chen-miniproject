@@ -175,4 +175,39 @@ public class RouteControllerUnitTests {
     assertEquals(HttpStatus.INTERNAL_SERVER_ERROR, result.getStatusCode());
     assertEquals("Error occurred when getting recommended books", errorMessage);
   }
+
+  @Test
+  public void checkoutTest() {
+    ResponseEntity<?> result = routeController.checkout(0);
+
+    Book b = (Book) result.getBody();
+
+    assertEquals(HttpStatus.OK, result.getStatusCode());
+    assertEquals(0, b.getId());
+    assertEquals(1, b.getAmountOfTimesCheckedOut());
+    assertEquals(1, b.getReturnDates().size());
+    assertEquals(0, b.getCopiesAvailable());
+  }
+
+  @Test
+  public void checkoutNotAvailableTest() {
+    book.checkoutCopy();
+
+    ResponseEntity<?> result = routeController.checkout(0);
+
+    String notAvailableMessage = (String) result.getBody();
+
+    assertEquals("No available copies for book with identifier 0", notAvailableMessage);
+    assertEquals(HttpStatus.OK, result.getStatusCode());
+  }
+
+  @Test
+  public void checkoutBookNotFound() {
+    ResponseEntity<?> result = routeController.checkout(15);
+
+    String notFoundMessage = (String) result.getBody();
+
+    assertEquals("Book not found.", notFoundMessage);
+    assertEquals(HttpStatus.NOT_FOUND, result.getStatusCode());
+  }
 }
