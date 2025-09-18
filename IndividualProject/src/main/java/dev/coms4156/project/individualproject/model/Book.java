@@ -4,6 +4,7 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 /**
  * This class defines the Book entry model.
@@ -118,7 +119,6 @@ public class Book implements Comparable<Book> {
     }
     return false;
   }
-
 
   /**
    * Adds a new copy of the book.
@@ -280,6 +280,11 @@ public class Book implements Comparable<Book> {
 
     Book cmpBook = (Book) obj;
     return cmpBook.id == this.id;
+  }
+
+  @Override
+  public int hashCode() {
+    return Objects.hash(id);
   }
 
   @Override
