@@ -2,6 +2,7 @@ package dev.coms4156.project.individualproject;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertIterableEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import dev.coms4156.project.individualproject.controller.RouteController;
 import dev.coms4156.project.individualproject.model.Book;
@@ -128,4 +129,50 @@ public class RouteControllerUnitTests {
     assertEquals(HttpStatus.NOT_FOUND, result.getStatusCode());
   }
 
+  @Test
+  public void getRecommendationsTest() {
+    List<Book> books = new ArrayList<>();
+    for (int i = 1; i <= 15; i++) {
+      Book newBook = new Book(String.format("Book %d", i), i);
+      for (int j = 1; j <= i; j++) {
+        newBook.addCopy();
+        newBook.checkoutCopy();
+      }
+      books.add(newBook);
+    }
+
+    Mockito.when(mockApiService.getBooks()).thenReturn(books);
+
+    ResponseEntity<?> result = routeController.getRecommendations();
+
+    List<Book> recommendations = (List<Book>) result.getBody();
+
+    assertEquals(HttpStatus.OK, result.getStatusCode());
+    assertEquals(recommendations.size(), 10);
+
+    for (Book b : recommendations) {
+      assertTrue(books.contains(b));
+    }
+
+    for (int i = 11; i <= 15; i++) {
+      assertTrue(recommendations.contains(new Book(String.format("Book %d", i), i)));
+    }
+  }
+
+  @Test
+  public void getRecommendationsNotEnoughBooksTest() {
+    Book book1 = new Book("Book 1", 1);
+    Book book2 = new Book("Book 2", 2);
+
+    List<Book> books = new ArrayList<>(Arrays.asList(book1, book2));
+
+    Mockito.when(mockApiService.getBooks()).thenReturn(books);
+
+    ResponseEntity<?> result = routeController.getRecommendations();
+
+    String errorMessage = (String) result.getBody();
+
+    assertEquals(HttpStatus.INTERNAL_SERVER_ERROR, result.getStatusCode());
+    assertEquals("Error occurred when getting recommended books", errorMessage);
+  }
 }

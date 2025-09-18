@@ -3,13 +3,14 @@ package dev.coms4156.project.individualproject.controller;
 import dev.coms4156.project.individualproject.model.Book;
 import dev.coms4156.project.individualproject.service.MockApiService;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 /**
@@ -61,7 +62,7 @@ public class RouteController {
    *         occurred with an
    *         HTTP 500 response.
    */
-  @PutMapping({ "/books/available" })
+  @GetMapping({ "/books/available" })
   public ResponseEntity<?> getAvailableBooks() {
     try {
       List<Book> availableBooks = new ArrayList<>();
@@ -76,6 +77,51 @@ public class RouteController {
     } catch (Exception e) {
       System.err.println(e);
       return new ResponseEntity<>("Error occurred when getting all available books",
+          HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+  }
+
+  /**
+   * Get and return a list of 10 books, where 5 are the most popular books, and 5
+   * are
+   * randomly selected.
+   *
+   * @return A {@code ResponseEntity} containing a list of 10 {@code Book} objects
+   *         with an HTTP 200 response if successful, or a message indicating an
+   *         error
+   *         with an HTTP 500 response.
+   */
+  @GetMapping({ "/books/recommendations" })
+  public ResponseEntity<?> getRecommendations() {
+    try {
+      List<Book> recommendations = new ArrayList<>();
+
+      List<Book> allBooks = mockApiService.getBooks();
+      if (allBooks.size() < 10) {
+        throw new Exception("Not enough books to recommend");
+      }
+
+      Collections.sort(allBooks, new Comparator<Book>() {
+        @Override
+        public int compare(Book b1, Book b2) {
+          return b2.getAmountOfTimesCheckedOut() - b1.getAmountOfTimesCheckedOut();
+        }
+      });
+
+      for (int i = 0; i < 5; i++) {
+        recommendations.add(allBooks.get(i));
+      }
+
+      List<Book> remaining = allBooks.subList(5, allBooks.size());
+      Collections.shuffle(remaining);
+
+      for (int i = 0; i < 5; i++) {
+        recommendations.add(remaining.get(i));
+      }
+
+      return new ResponseEntity<>(recommendations, HttpStatus.OK);
+    } catch (Exception e) {
+      return new ResponseEntity<>("Error occurred when getting recommended books",
           HttpStatus.INTERNAL_SERVER_ERROR);
     }
   }
