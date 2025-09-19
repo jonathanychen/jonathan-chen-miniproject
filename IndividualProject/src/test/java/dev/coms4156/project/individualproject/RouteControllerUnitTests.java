@@ -198,7 +198,7 @@ public class RouteControllerUnitTests {
     String notAvailableMessage = (String) result.getBody();
 
     assertEquals("No available copies for book with identifier 0", notAvailableMessage);
-    assertEquals(HttpStatus.OK, result.getStatusCode());
+    assertEquals(HttpStatus.BAD_REQUEST, result.getStatusCode());
   }
 
   @Test

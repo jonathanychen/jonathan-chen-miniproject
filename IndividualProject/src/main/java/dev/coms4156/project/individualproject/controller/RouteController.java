@@ -161,8 +161,9 @@ public class RouteController {
    *
    * @param bookId An {@code Integer} representing the unique id of the book.
    * @return A {@code ResponseEntity} containing the updated {@code Book} object
-   *         with an HTTP 200 response if successful or HTTP 404 if the book is 
-   *         not found, or a message indicating an error with an HTTP 500 code.
+   *         with an HTTP 200 response if successful, HTTP 400 if there are no
+   *         copies to be checked out, HTTP 404 if the book is not found,
+   *         or a message indicating an error with an HTTP 500 code.
    */
   @PostMapping({ "/checkout" })
   public ResponseEntity<?> checkout(@RequestParam Integer bookId) {
@@ -172,7 +173,8 @@ public class RouteController {
           String result = book.checkoutCopy();
           if (result == null) {
             return new ResponseEntity<>(
-                String.format("No available copies for book with identifier %d", bookId), HttpStatus.OK);
+                String.format("No available copies for book with identifier %d", bookId), 
+                HttpStatus.BAD_REQUEST);
           }
 
           return new ResponseEntity<>(book, HttpStatus.OK);
