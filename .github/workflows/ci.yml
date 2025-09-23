@@ -19,6 +19,7 @@ jobs:
         uses: actions/setup-java@v4
         with:
           java-version: '17'
+          distribution: 'oracle'
       - name: Maven Package
         run: mvn -f IndividualProject/pom.xml -B clean package -DskipTests
       - name: Maven Verify
